@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>메디꼬들 - 의학용어 6자소 꼬들</title>
     <meta name="description" content="정확히 6자소로 구성된 의학용어를 맞추는 교육용 게임, 메디꼬들입니다.">
-    <link rel="stylesheet" href="style.css">
     <!-- Google Fonts: Outfit & Noto Sans KR -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,44 +15,8 @@
 </head>
 
 <body>
-    <div id="app">
-        <header>
-            <div class="header-content">
-                <button id="help-btn" class="icon-btn" title="도움말">?</button>
-                <h1>메디<span>꼬들</span></h1>
-                <div class="header-right">
-                    <button id="stats-btn" class="icon-btn" title="통계">📊</button>
-                    <button id="settings-btn" class="icon-btn" title="설정">⚙️</button>
-                </div>
-            </div>
-            <div class="daily-info">
-                <span id="game-date">2026. 01. 20</span>
-                <span id="game-number">#1</span>
-            </div>
-        </header>
-
-        <main id="game-container">
-            <div id="grid-container">
-                <!-- 6x6 Grid will be generated here -->
-            </div>
-        </main>
-
-        <section id="keyboard-container">
-            <!-- QWERTY Keyboard will be generated here -->
-        </section>
-
-        <!-- Modals -->
-        <div id="modal-overlay" class="hidden">
-            <div id="modal-content" class="modal">
-                <button id="close-modal" class="close-btn">&times;</button>
-                <div id="modal-body"></div>
-            </div>
-        </div>
-
-        <!-- Toast Notification -->
-        <div id="toast-container"></div>
-    </div>
-    <script src="script.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 
 </html>

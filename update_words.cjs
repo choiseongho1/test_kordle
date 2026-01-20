@@ -28,8 +28,8 @@ const passed = WORDS_SOURCE.filter(word => {
     return units.length === 6 && units.every(k => ALLOWED_KEYS.includes(k));
 });
 
-const scriptContent = fs.readFileSync('script.js', 'utf8');
-const updatedContent = scriptContent.replace(/const WORDS = \[[\s\S]*?\];/, `const WORDS = ${JSON.stringify(passed, null, 4)};`);
+const constantsContent = fs.readFileSync('src/constants.js', 'utf8');
+const updatedContent = constantsContent.replace(/export const WORDS = \[[\s\S]*?\];/, `export const WORDS = ${JSON.stringify(passed, null, 4)};`);
 
-fs.writeFileSync('script.js', updatedContent);
-console.log(`Updated script.js with ${passed.length} valid words.`);
+fs.writeFileSync('src/constants.js', updatedContent);
+console.log(`Updated src/constants.js with ${passed.length} valid words.`);
