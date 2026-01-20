@@ -6,18 +6,57 @@ import Keyboard from './components/Keyboard';
 import Modal from './components/Modal';
 import ToastContainer from './components/Toast';
 
+const SAVE_KEY = 'mk-game-state';
+
 const App = () => {
-  const [target, setTarget] = useState(() => getDailyTarget(WORDS));
-  const [guesses, setGuesses] = useState([]);
+  const [dayNumber] = useState(() => getDailyTarget(WORDS).dayNumber);
+  const targetWord = WORDS[dayNumber % WORDS.length];
+
+  // Initialize state from local storage
+  const [gameState] = useState(() => {
+    const saved = localStorage.getItem(SAVE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.dayNumber === dayNumber) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Failed to load saved state", e);
+      }
+    }
+    return {
+      guesses: [],
+      currentRow: 0,
+      gameOver: false,
+      statuses: [],
+      keyStatuses: {}
+    };
+  });
+
+  const [guesses, setGuesses] = useState(gameState.guesses);
   const [currentGuess, setCurrentGuess] = useState([]);
-  const [currentRow, setCurrentRow] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
-  const [statuses, setStatuses] = useState([]);
-  const [keyStatuses, setKeyStatuses] = useState({});
+  const [currentRow, setCurrentRow] = useState(gameState.currentRow);
+  const [gameOver, setGameOver] = useState(gameState.gameOver);
+  const [statuses, setStatuses] = useState(gameState.statuses);
+  const [keyStatuses, setKeyStatuses] = useState(gameState.keyStatuses);
   const [toasts, setToasts] = useState([]);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  const targetJaso = decompose(target.word);
+  // Sync state to local storage
+  useEffect(() => {
+    const stateToSave = {
+      dayNumber,
+      guesses,
+      currentRow,
+      gameOver,
+      statuses,
+      keyStatuses
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(stateToSave));
+  }, [guesses, currentRow, gameOver, statuses, keyStatuses, dayNumber]);
+
+  const targetJaso = decompose(targetWord);
 
   const showToast = useCallback((message) => {
     const id = Date.now();
@@ -84,12 +123,12 @@ const App = () => {
       showToast('축하합니다! 정답입니다.');
     } else if (currentRow === 5) {
       setGameOver(true);
-      showToast(`아쉽네요. 정답은 [${target.word}]였습니다.`);
+      showToast('아쉽네요. 다음 기회에 도전해보세요!');
     }
 
     setCurrentRow((prev) => prev + 1);
     setCurrentGuess([]);
-  }, [currentGuess, currentRow, guesses, statuses, target.word, targetJaso, showToast, updateKeyStatuses]);
+  }, [currentGuess, currentRow, guesses, statuses, targetWord, targetJaso, showToast, updateKeyStatuses]);
 
   const handleInput = useCallback((key) => {
     if (gameOver) return;
@@ -184,6 +223,7 @@ const App = () => {
         <p><strong>6자소 구성 예시:</strong><br />
           - 간염 (ㄱ, ㅏ, ㄴ, ㅇ, ㅕ, ㅁ = 6)<br />
           - 코로나 (ㅋ, ㅗ, ㄹ, ㅗ, ㄴ, ㅏ = 6)</p>
+        <p><small>*정답은 매일 아침 9시(KST)에 새로운 단어로 초기화됩니다.</small></p>
         <p><small>*ㅐ, ㅔ 및 복합모음이 포함된 단어는 제외되었습니다.</small></p>
       </Modal>
 

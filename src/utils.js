@@ -24,15 +24,14 @@ export function decompose(word) {
 
 export function getDailyTarget(words) {
     const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 0);
-    const diff = now - start;
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
+    // 한국 시간(KST) 아침 9시는 UTC 00:00입니다.
+    // UTC 00:00 기준 일 수를 사용하여 전 세계 어디서나 한국 시간 9시에 초기화되도록 합니다.
+    const dayCount = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
 
-    const index = dayOfYear % words.length;
+    const index = dayCount % words.length;
     return {
         word: words[index],
-        dayNumber: dayOfYear,
-        dateString: now.toLocaleDateString()
+        dayNumber: dayCount,
+        dateString: new Date(dayCount * 86400000).toLocaleDateString()
     };
 }
