@@ -210,13 +210,22 @@ header h1 span {
 .tile.reveal:nth-child(6) { animation-delay: 500ms; }
 
 /* Keep the text white for correct/absent, dark for present (yellow) */
-.tile.correct, .tile.absent {
-  border: none;
+.tile.correct {
+  background-color: var(--color-correct);
+  border-color: var(--color-correct);
   color: white;
 }
+
 .tile.present {
-  border: none;
+  background-color: var(--color-present);
+  border-color: var(--color-present);
   color: var(--color-text-main);
+}
+
+.tile.absent {
+  background-color: var(--color-absent);
+  border-color: var(--color-absent);
+  color: white;
 }
 
 /* --- Keyboard --- */

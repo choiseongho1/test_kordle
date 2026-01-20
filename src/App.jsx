@@ -74,7 +74,7 @@ const App = () => {
 
     const newGuesses = [...guesses, currentGuess];
     const newStatuses = [...statuses, rowStatuses];
-    
+
     setGuesses(newGuesses);
     setStatuses(newStatuses);
     updateKeyStatuses(currentGuess, rowStatuses);
@@ -85,10 +85,10 @@ const App = () => {
     } else if (currentRow === 5) {
       setGameOver(true);
       showToast(`아쉽네요. 정답은 [${target.word}]였습니다.`);
-    } else {
-      setCurrentRow((prev) => prev + 1);
-      setCurrentGuess([]);
     }
+
+    setCurrentRow((prev) => prev + 1);
+    setCurrentGuess([]);
   }, [currentGuess, currentRow, guesses, statuses, target.word, targetJaso, showToast, updateKeyStatuses]);
 
   const handleInput = useCallback((key) => {
@@ -153,19 +153,19 @@ const App = () => {
       </header>
 
       <main id="game-container">
-        <Grid 
-          guesses={guesses} 
-          currentGuess={currentGuess} 
-          currentRow={currentRow} 
+        <Grid
+          guesses={guesses}
+          currentGuess={currentGuess}
+          currentRow={currentRow}
           statuses={statuses}
         />
       </main>
 
       <Keyboard onInput={handleInput} keyStatuses={keyStatuses} />
 
-      <Modal 
-        isOpen={isHelpOpen} 
-        onClose={() => setIsHelpOpen(false)} 
+      <Modal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
         title="게임 방법"
       >
         <p>6자소로 된 의학용어를 6번의 기회 안에 맞추세요.</p>
@@ -182,8 +182,8 @@ const App = () => {
           <p><strong>ㄴ</strong>는 정답에 포함되지 않습니다.</p>
         </div>
         <p><strong>6자소 구성 예시:</strong><br />
-        - 간염 (ㄱ, ㅏ, ㄴ, ㅇ, ㅕ, ㅁ = 6)<br />
-        - 코로나 (ㅋ, ㅗ, ㄹ, ㅗ, ㄴ, ㅏ = 6)</p>
+          - 간염 (ㄱ, ㅏ, ㄴ, ㅇ, ㅕ, ㅁ = 6)<br />
+          - 코로나 (ㅋ, ㅗ, ㄹ, ㅗ, ㄴ, ㅏ = 6)</p>
         <p><small>*ㅐ, ㅔ 및 복합모음이 포함된 단어는 제외되었습니다.</small></p>
       </Modal>
 
