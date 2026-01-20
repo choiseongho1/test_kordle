@@ -1,24 +1,35 @@
 :root {
   /* Core Palette - Clean Light Theme */
-  --color-bg: #ffffff;       /* Clean white */
-  --color-surface: #ffffff;  /* White */
-  --color-border: #e2e8f0;   /* Slate 200 */
-  
-  --color-text-main: #0f172a; /* Slate 900 */
-  --color-text-sub: #64748b;  /* Slate 500 */
+  --color-bg: #ffffff;
+  /* Clean white */
+  --color-surface: #ffffff;
+  /* White */
+  --color-border: #e2e8f0;
+  /* Slate 200 */
+
+  --color-text-main: #0f172a;
+  /* Slate 900 */
+  --color-text-sub: #64748b;
+  /* Slate 500 */
 
   /* Game Colors */
-  --color-correct: #10b981;  /* Emerald 500 */
-  --color-present: #eab308;  /* Yellow 500 */
-  --color-absent: #94a3b8;   /* Slate 400 - more neutral */
-  --color-key-bg: #e2e8f0;   /* Slate 200 */
-  
+  --color-correct: #10b981;
+  /* Emerald 500 */
+  --color-present: #eab308;
+  /* Yellow 500 */
+  --color-absent: #94a3b8;
+  /* Slate 400 - more neutral */
+  --color-key-bg: #e2e8f0;
+  /* Slate 200 */
+
   /* Tile States */
   --tile-size: 56px;
   --tile-gap: 4px;
-  --tile-border-empty: #e2e8f0; /* Slate 200 */
-  --tile-border-filled: #000000; /* Black */
-  
+  --tile-border-empty: #e2e8f0;
+  /* Slate 200 */
+  --tile-border-filled: #000000;
+  /* Black */
+
   /* Keyboard Layout */
   --key-gap: 2px;
   --key-height: 58px;
@@ -28,6 +39,11 @@
   --trans-speed: 0.15s;
   --reveal-duration: 0.6s;
 
+  /* Math Survival Specific */
+  --primary: #6366f1;
+  --success: #10b981;
+  --danger: #f43f5e;
+
   /* Header Theme (Clean Style) */
   --header-bg: #ffffff;
   --header-fg: #000000;
@@ -35,7 +51,9 @@
   --header-icon-hover: #f1f5f9;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -47,7 +65,8 @@ body {
   color: var(--color-text-main);
   height: 100vh;
   width: 100vw;
-  overflow: hidden; /* Prevent scroll on mobile */
+  overflow: hidden;
+  /* Prevent scroll on mobile */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -63,11 +82,21 @@ body {
   margin: 0 auto;
 }
 
-.app-container {
+.app-main-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 /* --- Header --- */
@@ -76,7 +105,8 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
-  height: 56px; /* Compact height */
+  height: 56px;
+  /* Compact height */
   background-color: var(--header-bg);
   border-bottom: 1px solid var(--header-border);
   color: var(--header-fg);
@@ -103,21 +133,25 @@ header h1 span {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 4px; /* Tight icon spacing */
+  gap: 4px;
+  /* Tight icon spacing */
 }
 
 .icon-btn {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--header-fg); /* Dark icon color */
+  color: var(--header-fg);
+  /* Dark icon color */
   padding: 8px;
-  border-radius: 6px; /* Squarish rounded corners for clean UI */
+  border-radius: 6px;
+  /* Squarish rounded corners for clean UI */
   transition: background-color 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 0; /* Fix SVG height issues */
+  line-height: 0;
+  /* Fix SVG height issues */
 }
 
 .icon-btn svg {
@@ -131,8 +165,121 @@ header h1 span {
   color: var(--header-fg);
 }
 
+/* --- Home Hub --- */
+.home-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+.home-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.home-header h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--color-correct), #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-header p {
+  color: var(--color-text-sub);
+  font-size: 1.1rem;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.game-card {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.game-card:hover:not(.disabled) {
+  transform: translateY(-4px);
+  border-color: var(--theme-color);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
+}
+
+.game-card.disabled {
+  opacity: 0.7;
+  cursor: default;
+  background-color: #f8fafc;
+}
+
+.game-icon {
+  font-size: 2.5rem;
+  margin-right: 20px;
+}
+
+.game-info h3 {
+  font-size: 1.25rem;
+  color: var(--color-text-main);
+  margin-bottom: 4px;
+}
+
+.game-info p {
+  color: var(--color-text-sub);
+  font-size: 0.9rem;
+}
+
+.play-badge {
+  margin-left: auto;
+  padding: 6px 14px;
+  background: var(--theme-color);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.home-footer {
+  margin-top: auto;
+  padding-top: 40px;
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: 0.8rem;
+}
+
+/* --- Back Button --- */
+.back-btn {
+  color: var(--header-fg);
+  padding: 8px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
 .daily-info {
-  display: none; /* Hide for cleaner look, or move to modal */
+  display: none;
+  /* Hide for cleaner look, or move to modal */
 }
 
 /* --- Game Grid --- */
@@ -194,20 +341,39 @@ header h1 span {
 .tile.reveal.correct {
   animation: flip-correct var(--reveal-duration) ease-in forwards;
 }
+
 .tile.reveal.present {
   animation: flip-present var(--reveal-duration) ease-in forwards;
 }
+
 .tile.reveal.absent {
   animation: flip-absent var(--reveal-duration) ease-in forwards;
 }
 
 /* Staggered Animation Delays */
-.tile.reveal:nth-child(1) { animation-delay: 0ms; }
-.tile.reveal:nth-child(2) { animation-delay: 100ms; }
-.tile.reveal:nth-child(3) { animation-delay: 200ms; }
-.tile.reveal:nth-child(4) { animation-delay: 300ms; }
-.tile.reveal:nth-child(5) { animation-delay: 400ms; }
-.tile.reveal:nth-child(6) { animation-delay: 500ms; }
+.tile.reveal:nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.tile.reveal:nth-child(2) {
+  animation-delay: 100ms;
+}
+
+.tile.reveal:nth-child(3) {
+  animation-delay: 200ms;
+}
+
+.tile.reveal:nth-child(4) {
+  animation-delay: 300ms;
+}
+
+.tile.reveal:nth-child(5) {
+  animation-delay: 400ms;
+}
+
+.tile.reveal:nth-child(6) {
+  animation-delay: 500ms;
+}
 
 /* Keep the text white for correct/absent, dark for present (yellow) */
 .tile.correct {
@@ -230,7 +396,8 @@ header h1 span {
 
 /* --- Keyboard --- */
 #keyboard-container {
-  padding: 10px 8px 20px; /* Extra bottom padding for mobile */
+  padding: 10px 8px 20px;
+  /* Extra bottom padding for mobile */
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
@@ -268,6 +435,198 @@ header h1 span {
   filter: brightness(0.95);
 }
 
+/* --- Math Survival - Premium Redesign --- */
+.math-game-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+  background-color: var(--color-bg);
+}
+
+.math-game-wrapper header {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.math-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 20px;
+}
+
+.math-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.math-timer-wrapper {
+  width: 100%;
+  height: 8px;
+  background: var(--color-key-bg);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.math-timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #818cf8);
+  transition: width 0.1s linear;
+}
+
+.math-formula-box {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  gap: 12px;
+  padding: 40px 0;
+  color: var(--color-text-main);
+  text-align: center;
+}
+
+.math-slot {
+  width: 60px;
+  height: 60px;
+  background: #f8fafc;
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.math-slot.filled {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.math-pad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  padding: 20px 0 40px;
+}
+
+.math-btn-delete {
+  color: var(--danger) !important;
+}
+
+.math-btn-delete:hover {
+  border-color: var(--danger) !important;
+  background: #fff1f2 !important;
+}
+
+.math-btn {
+  height: 70px;
+  border: 1px solid var(--color-border);
+  background: white;
+  border-radius: 16px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.math-btn:active {
+  transform: scale(0.95);
+  background: #f1f5f9;
+}
+
+.math-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.math-hint {
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: 0.9rem;
+  margin-top: auto;
+  padding-bottom: 20px;
+}
+
+/* Math Game Over Overlay */
+.math-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.math-overlay h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.math-overlay-score {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  color: #cbd5e1;
+}
+
+.math-overlay-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.math-overlay .btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.math-overlay .btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 .key:active {
   transform: scale(0.95);
   filter: brightness(0.9);
@@ -279,9 +638,20 @@ header h1 span {
 }
 
 /* Keyboard States */
-.key.correct { background-color: var(--color-correct); color: white; }
-.key.present { background-color: var(--color-present); color: var(--color-text-main); }
-.key.absent { background-color: var(--color-absent); color: white; }
+.key.correct {
+  background-color: var(--color-correct);
+  color: white;
+}
+
+.key.present {
+  background-color: var(--color-present);
+  color: var(--color-text-main);
+}
+
+.key.absent {
+  background-color: var(--color-absent);
+  color: white;
+}
 
 /* --- Modals --- */
 #modal-overlay {
@@ -346,9 +716,18 @@ header h1 span {
   font-size: 1.2rem;
   border: none;
 }
-.help-example .tile.correct { background-color: var(--color-correct); }
-.help-example .tile.present { background-color: var(--color-present); }
-.help-example .tile.absent { background-color: var(--color-absent); }
+
+.help-example .tile.correct {
+  background-color: var(--color-correct);
+}
+
+.help-example .tile.present {
+  background-color: var(--color-present);
+}
+
+.help-example .tile.absent {
+  background-color: var(--color-absent);
+}
 
 /* --- Toast --- */
 #toast-container {
@@ -377,50 +756,145 @@ header h1 span {
 /* --- Animations --- */
 
 @keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes toastPop {
-  from { opacity: 0; transform: translateY(10px) scale(0.9); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Specialized Flip Animations that handle color change at 50% */
 @keyframes flip-correct {
-  0% { transform: rotateX(0); background-color: transparent; border-color: var(--tile-border-filled); color: var(--color-text-main); }
-  49.9% { background-color: transparent; border-color: var(--tile-border-filled); color: var(--color-text-main); }
-  50% { transform: rotateX(90deg); background-color: var(--color-correct); border-color: var(--color-correct); color: white; }
-  100% { transform: rotateX(0); background-color: var(--color-correct); border-color: var(--color-correct); color: white; }
+  0% {
+    transform: rotateX(0);
+    background-color: transparent;
+    border-color: var(--tile-border-filled);
+    color: var(--color-text-main);
+  }
+
+  49.9% {
+    background-color: transparent;
+    border-color: var(--tile-border-filled);
+    color: var(--color-text-main);
+  }
+
+  50% {
+    transform: rotateX(90deg);
+    background-color: var(--color-correct);
+    border-color: var(--color-correct);
+    color: white;
+  }
+
+  100% {
+    transform: rotateX(0);
+    background-color: var(--color-correct);
+    border-color: var(--color-correct);
+    color: white;
+  }
 }
 
 @keyframes flip-present {
-  0% { transform: rotateX(0); background-color: transparent; border-color: var(--tile-border-filled); color: var(--color-text-main); }
-  49.9% { background-color: transparent; border-color: var(--tile-border-filled); color: var(--color-text-main); }
-  50% { transform: rotateX(90deg); background-color: var(--color-present); border-color: var(--color-present); color: var(--color-text-main); }
-  100% { transform: rotateX(0); background-color: var(--color-present); border-color: var(--color-present); color: var(--color-text-main); }
+  0% {
+    transform: rotateX(0);
+    background-color: transparent;
+    border-color: var(--tile-border-filled);
+    color: var(--color-text-main);
+  }
+
+  49.9% {
+    background-color: transparent;
+    border-color: var(--tile-border-filled);
+    color: var(--color-text-main);
+  }
+
+  50% {
+    transform: rotateX(90deg);
+    background-color: var(--color-present);
+    border-color: var(--color-present);
+    color: var(--color-text-main);
+  }
+
+  100% {
+    transform: rotateX(0);
+    background-color: var(--color-present);
+    border-color: var(--color-present);
+    color: var(--color-text-main);
+  }
 }
 
 @keyframes flip-absent {
-  0% { transform: rotateX(0); background-color: transparent; border-color: var(--tile-border-filled); color: var(--color-text-main); }
-  49.9% { background-color: transparent; border-color: var(--tile-border-filled); color: var(--color-text-main); }
-  50% { transform: rotateX(90deg); background-color: var(--color-absent); border-color: var(--color-absent); color: white; }
-  100% { transform: rotateX(0); background-color: var(--color-absent); border-color: var(--color-absent); color: white; }
+  0% {
+    transform: rotateX(0);
+    background-color: transparent;
+    border-color: var(--tile-border-filled);
+    color: var(--color-text-main);
+  }
+
+  49.9% {
+    background-color: transparent;
+    border-color: var(--tile-border-filled);
+    color: var(--color-text-main);
+  }
+
+  50% {
+    transform: rotateX(90deg);
+    background-color: var(--color-absent);
+    border-color: var(--color-absent);
+    color: white;
+  }
+
+  100% {
+    transform: rotateX(0);
+    background-color: var(--color-absent);
+    border-color: var(--color-absent);
+    color: white;
+  }
 }
 
 /* Utilities */
-.hidden { display: none !important; }
+.hidden {
+  display: none !important;
+}
 
 /* Responsive adjustments */
 @media (max-height: 700px) {
@@ -428,12 +902,15 @@ header h1 span {
     max-width: 300px;
     gap: 4px;
   }
+
   .tile {
     font-size: 1.5rem;
   }
+
   header {
     height: 50px;
   }
+
   header h1 {
     font-size: 1.2rem;
   }
